@@ -17,6 +17,8 @@ module AcidicJob
         job = ::ActiveJob::Base.deserialize(hash)
         job.send(:deserialize_arguments_if_needed)
         job
+      rescue NameError
+        nil
       end
 
       def serialize?(argument)

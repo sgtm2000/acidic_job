@@ -360,5 +360,17 @@ class TestAcidicJobSerializer < ActiveSupport::TestCase
       AcidicJob::Serializer.dump(instance)
     )
   end
+
+  test "JobSerializer#deserialize returns nil for unknown job_class" do
+    serializer = AcidicJob::Serializers::JobSerializer.new
+    hash = {
+      "_aj_serialized" => "AcidicJob::Serializers::JobSerializer",
+      "job_class" => "Ghost::JobThatDoesNotExist",
+      "job_id" => "abc-123",
+      "queue_name" => "default",
+      "arguments" => []
+    }
+    assert_nil serializer.deserialize(hash)
+  end
 end
 # rubocop:enable Lint/ConstantDefinitionInBlock
